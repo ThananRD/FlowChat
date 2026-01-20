@@ -1,3 +1,4 @@
+```mermaid
 flowchart TB
     A["Start Program"] --> B["Initialize Library <br>เรียก<br> openNIDLibRD()"]
     B --> C{"openNIDLibRD()<br>return = 0 ?"}
