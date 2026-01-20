@@ -1,0 +1,32 @@
+---
+config:
+  look: neo
+  theme: forest
+  layout: dagre
+---
+flowchart TB
+    A["Start Program"] --> B["Initialize Library <br>เรียก<br> openNIDLibRD()"]
+    B --> C{"openNIDLibRD()<br>return = 0 ?"}
+    C -- NO --> D["Error : Initialize Library Failed"]
+    D --> Z["End"]
+    C -- YES --> E["รอผู้ใช้เสียบเครื่องอ่าน"]
+    E --> F["selectReader(reader)<br>- เลือกเครื่องอ่าน<br>- ได้ IntPtr obj"]
+    F --> G["Auto Read Loop Timer<br>Set interval 1000 ms"]
+    G --> H["RDNID.connectCardRD(obj)"] 
+    H --> I{"connectCardRD(obj)<br>return = 0 ?"}
+    I -- "NO -16" --> G
+    I -- YES มีบัตร --> J["Wait 500 ms<br>(Thread.Sleep 500)"]
+    J --> K["AutoReadCard(obj)"]
+    K --> L{"ReaderIsBussy = false"}
+    L -- Yes --> M["Set ReaderIsBussy =true"]
+    M --> N1["getNIDNumberRD()<br>อ่านเลขบัตร 13 หลัก"] & N2["getNIDTextRD()<br>อ่านข้อมูล Text 29 รายการ"] & N3["getNIDPhotoRD()<br>อ่านรูปภาพเจ้าของบัตร"]
+    N1 --> O["แสดงผลข้อมูล"]
+    N2 --> O
+    N3 --> O
+    O --> P["Set ReaderIsBussy = false"]
+    P --> Q["รอถอดบัตร / ถอดเครื่องอ่าน"]
+    Q --> R["deselectReaderRD(obj)"]
+    R --> Z
+    
+
+ 
